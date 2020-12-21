@@ -1,0 +1,22 @@
+Package: ASDplot
+Type: Package
+Title: Plot Standardized Differences or Proportions between Sample Groups
+Version: 0.1.0
+Author: Yasser Albogami
+Maintainer: The package maintainer <yalbogami@ksu.edu.sa>
+Description: The package helps data scientists to visualize sample groups differences. In observational studies, propesnity score analyses have been frequently utilized to balance groups differences. The package facilitates this by showing the standaradized differences before and after propensity score adjustment (weighting, matching etc).
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Imports: 
+    scales,
+    ggplot2
+Suggests:
+    tableone,
+    survey,
+    survival,
+    tidyverse,
+    haven,
+    labelled,
+    MatchIt
