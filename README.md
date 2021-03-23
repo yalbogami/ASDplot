@@ -7,16 +7,7 @@
 
 <!-- badges: end -->
 
-In observational studies, inverse probability of treatment weighting
-(IPTW) is used to adjust for measured confounders in order to mitigate
-the observed systematic differences between study groups. Several
-diagnostic methods have been proposed to examine whether weighted
-samples achieved balance one of which is the absolute standardized
-differences (ASD) [Austin and
-Stuart 2015](https://onlinelibrary.wiley.com/doi/10.1002/sim.6607).
-*ASDplot* provides a simple R function based on ggplot2 to assess the
-ASD before and after weighting to supplement the data analysis with
-visualizations of sample differences.
+Several diagnostic criteria have been proposed to examine whether study samples achieved balance after applying propensity score methods (e.g., matching, weighting, stratification, etc.). The ASDplot package helps to evaluate sample balance (sample differences) through absolute standardized differences visualization. For more information about absolute standardized differences, read [Austin and Stuart 2015](https://onlinelibrary.wiley.com/doi/10.1002/sim.6607).
 
 ## Installation
 
@@ -30,43 +21,36 @@ devtools::install_github("yalbogami/ASDplot")
 
 ## Requirements
 
-To use ASDplot, a data frame must have the following columns:
+To use *ASDplot*, a data frame must have the following columns:
 
   - 1- Variables’ names
 
-  - 2- Absolute Standardized differences (ASD) values as proportions and
+  - 2- Absolute Standardized differences (ASD) values as proportions *AND*
 
-  - 3- Methods used to obtain the ASD (e.g., unadjusted, weighted, etc)
+  - 3- Methods used to obtain the ASD (e.g., unadjusted, PS weighted, PS matching, etc.)
 
 <!-- end list -->
 
-``` r
-ASDplot(data=data,
-        x=data$Variables,
-        y= data$ASD,
-        shape=data$Methods,
-        methods=c('Method 1', 'Method 2', 'Method 3'))
-```
+|Variables|ASD|Methods|
+|---|---|---|
+|var1|0.5|1|
+|var2|0.6|1|
+|var3|0.3|1|
+|var1|0.23|2|
+|var2|0.22|2|
+|var3|0.11|2|
+|var1|0.03|3|
+|var2|0.04|3|
+|var3|0.05|3|
 
 ## The Following example is only intended to demonstrate ASDplot utility
 
-In this example, we used MEPS 2017 datasets to weight the sample based
-on IPTW to achieve a balance between inhaled corticosteroids and
-leukotriene antagonists for asthma users. We estimated the propensity
-scores, from which IPTW was calculated, using two different methods
-1-logistic regression and 2-Bayesian additive regression trees.
+In this example, we used MEPS 2017 datasets to calculate inverse probability treatment weights (IPTWs) to balance asthma patients who use inhaled corticosteroids or leukotriene antagonists. We estimated the propensity scores, from which IPTW was calculated, using two different methods 1-*logistic regression* and 2-*Bayesian additive regression trees*.
 
 ### Downloading and cleaning the datasets
 
 ``` r
-library(ASDplot)
-library(tableone)
-library(survey)
-library(tidyverse)
-library(haven)
-library(labelled)
-library(foreign)
-library(BART)
+xfun::pkg_attach(c('ASDplot','tableone','survey','tidyverse','haven','labelled','foreign','BART'))
 
 #Data 1: Full Year Dataset
 download.file("https://meps.ahrq.gov/mepsweb/data_files/pufs/h201ssp.zip", temp <- tempfile())
@@ -205,7 +189,7 @@ ASDplot(data=plot,
         shape=plot$Method,
         methods=c('Unweighted', 'IPTW (LR)', 'IPTW (BART)'))
 
-# to save the file use the following code
+# to save the file, use the following code
 ## ggsave("Figure 1.png",  units="in", width=18, height=15, dpi=300)
 ```
 
